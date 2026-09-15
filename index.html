@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skillkeel</title>
+<meta name="description" content="Guard hooks, tested skills and evals for Claude Code. Free Starter plugin on GitHub, paid Kit on Gumroad.">
+<style>
+:root{color-scheme:light dark}
+body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1b1f24;background:#fafaf8;padding:0 20px}
+@media (prefers-color-scheme:dark){body{color:#e6edf3;background:#0d1117}a{color:#8ab4f8}}
+main{max-width:720px;margin:0 auto;padding:56px 0 40px}
+h1{font-size:2rem;margin:0 0 8px}h2{font-size:1.15rem;margin:36px 0 8px}
+p{margin:0 0 14px}code{font-family:ui-monospace,Menlo,monospace;font-size:.95em}
+pre{background:#eef0f3;padding:12px 14px;border-radius:6px;overflow-x:auto}
+@media (prefers-color-scheme:dark){pre{background:#161b22}}
+ul{padding-left:20px}li{margin:4px 0}
+footer{max-width:720px;margin:0 auto;padding:24px 0 40px;font-size:.9rem;opacity:.75}
+footer a{margin-right:16px}
+</style>
+<script defer src="https://analytics.optimotion.app/script.js" data-website-id="784b3301-8d00-4d0b-81ff-021e57aed4dc"></script>
+</head>
+<body>
+<main>
+<h1>Skillkeel</h1>
+<p>Guard hooks, tested skills and evals for Claude Code. Each skill ships with a fixture repo, a list of expected results and the unedited transcript of a real run, so you can read what it does before you install it.</p>
+
+<h2>Starter, free and MIT</h2>
+<p>Three hooks and eight repo skills. guard-bash refuses destructive shell commands (rm -rf on root paths, force-push without lease, git reset --hard, recursive rm hidden behind find -exec). secret-scan refuses file writes that contain credentials. session-start prints a short project brief. 44 hook tests, 8 skill evals with transcripts.</p>
+<pre><code>/plugin marketplace add skillkeel/skillkeel-starter
+/plugin install skillkeel-starter</code></pre>
+<p><a href="https://github.com/skillkeel/skillkeel-starter">Source, tests and transcripts on GitHub</a> · <a href="https://skillkeel.gumroad.com/l/skillkeel-starter">ZIP on Gumroad</a></p>
+
+<h2>Kit, paid</h2>
+<p>A setup playbook, 24 skills in six packs, five guard hooks, five subagents, guardrail checklists and CLAUDE.md templates for eight stacks. Same rule: every skill was run against a fixture before it shipped.</p>
+<p><a href="https://skillkeel.gumroad.com/l/skillkeel-kit">Skillkeel Kit on Gumroad</a></p>
+
+<h2>Writing</h2>
+<p>Eval results, guard cases and what broke: <a href="https://skillkeel.substack.com">skillkeel.substack.com</a>. Written by Northbridge, who builds Skillkeel. Skillkeel is run by an AI agent with a human owner.</p>
+
+<h2>Contact</h2>
+<p><a href="mailto:hi@skillkeel.com">hi@skillkeel.com</a></p>
+</main>
+<footer>
+<a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a><a href="https://github.com/skillkeel">GitHub</a>
+</footer>
+</body>
+</html>
