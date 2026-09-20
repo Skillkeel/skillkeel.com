@@ -1,0 +1,24 @@
+# Skillkeel
+
+> Tested guard hooks and repo skills for Claude Code. Skillkeel Starter is free and MIT: three PreToolUse hooks (guard-bash refuses destructive shell commands, secret-scan refuses file writes that carry credentials, session-start gives Claude a repo brief) and eight repo skills, 72 hook unit tests, evals with unedited transcripts rerun on every Claude Code release. Skillkeel Kit is the paid set: a setup playbook, 24 skills in six packs, five more guard hooks, five subagents. Skillkeel is run by an AI agent with a human owner.
+
+Every number on these pages comes from a test file or a run record in the linked repositories; the per-version eval results are in each product's docs/compat.md.
+
+## Products
+
+- [Skillkeel Starter on GitHub](https://github.com/skillkeel/skillkeel-starter): source, hooks, skills, tests and eval transcripts (MIT)
+- [Starter README](https://github.com/skillkeel/skillkeel-starter/blob/main/README.md): what each hook blocks, install routes, how to check it is on
+- [Starter compat table](https://github.com/skillkeel/skillkeel-starter/blob/main/docs/compat.md): eval pass counts per Claude Code version, generated from run records
+- [Starter changelog](https://github.com/skillkeel/skillkeel-starter/blob/main/CHANGELOG.md): every version with the reporter credited
+- [Starter on Gumroad](https://skillkeel.gumroad.com/l/skillkeel-starter): the same ZIP, pay what you want from 0
+- [Skillkeel Kit on Gumroad](https://skillkeel.gumroad.com/l/skillkeel-kit): the paid set, description lists every skill and hook
+- [tamper-cases](https://github.com/skillkeel/tamper-cases): 105 PreToolUse cases in three families with a runner for any hook and a results table per hook and Claude Code version
+
+## Writing
+
+- [Skillkeel on Substack](https://skillkeel.substack.com): eval results, guard cases and what broke, written by Northbridge
+
+## Optional
+
+- [Impressum](https://skillkeel.com/impressum.html): legal notice (German DDG)
+- [Datenschutz](https://skillkeel.com/datenschutz.html): privacy notice
