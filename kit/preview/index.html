@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skillkeel Kit preview</title>
+<meta name="description" content="Read before you buy: chapter 4 of the Skillkeel Kit playbook, one skill's eval case with its unedited transcript, and the pass counts per Claude Code version.">
+<style>
+:root{color-scheme:light dark}
+body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1b1f24;background:#fafaf8;padding:0 20px}
+@media (prefers-color-scheme:dark){body{color:#e6edf3;background:#0d1117}a{color:#8ab4f8}}
+main{max-width:760px;margin:0 auto;padding:56px 0 40px}
+h1{font-size:2rem;margin:0 0 8px}h2{font-size:1.3rem;margin:44px 0 10px;padding-top:12px;border-top:1px solid #d0d4da}h3{font-size:1.05rem;margin:26px 0 6px}
+p{margin:0 0 14px}code{font-family:ui-monospace,Menlo,monospace;font-size:.95em}
+pre{background:#eef0f3;padding:12px 14px;border-radius:6px;overflow-x:auto;font-size:.9em}
+@media (prefers-color-scheme:dark){pre{background:#161b22}h2{border-color:#30363d}}
+ul,ol{padding-left:20px}li{margin:4px 0}
+table{border-collapse:collapse;margin:0 0 14px;font-size:.95em}th,td{border:1px solid #d0d4da;padding:5px 9px;text-align:left;vertical-align:top}
+.note{font-size:.92rem;opacity:.8}
+footer{max-width:760px;margin:0 auto;padding:24px 0 40px;font-size:.9rem;opacity:.75}
+footer a{margin-right:16px}
+</style>
+</head>
+<body>
+<main>
+<h1>Skillkeel Kit, read before you buy</h1>
+<p>Three things from the Kit, version 0.1.8: one chapter of the playbook in full, one skill's eval case with the unedited transcript of its latest run, and the table of pass counts per Claude Code version. Chapter, prompt, fixture and graders are the files in the ZIP; the run record, the transcript and the latest table row are from the repository (the ZIP carries the records up to 2026-09-19 and the table up to 2.1.276). <a href="https://skillkeel.gumroad.com/l/skillkeel-kit">Kit on Gumroad</a> · <a href="/">skillkeel.com</a></p>
+
+<h2>1. Playbook chapter 4: hooks (one of ten chapters)</h2>
+<p class="note">File <code>playbook/04-hooks.md</code>, unchanged.</p>
+<h1>4. Hooks</h1>
+<p>A hook is a shell command Claude Code runs at a fixed point: before a tool call, after it, when a session starts, when Claude stops. Hooks are where you put rules that must hold even when Claude is convinced otherwise.</p>
+<h2>Events you will use</h2>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Fires</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PreToolUse</code></td>
+<td>before a tool runs; can block</td>
+<td>guard-bash, secret-scan, migration-guard</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>after a tool runs</td>
+<td>format on save, log commands</td>
+</tr>
+<tr>
+<td><code>SessionStart</code></td>
+<td>on startup, <code>/clear</code>, compaction</td>
+<td>inject a short project brief</td>
+</tr>
+<tr>
+<td><code>UserPromptSubmit</code></td>
+<td>when you send a prompt; can reject</td>
+<td>strip pasted secrets, add context</td>
+</tr>
+<tr>
+<td><code>Stop</code> / <code>SubagentStop</code></td>
+<td>when Claude finishes a turn</td>
+<td>enforce "run tests before done"</td>
+</tr>
+<tr>
+<td><code>PreCompact</code></td>
+<td>before context compaction</td>
+<td>save state</td>
+</tr>
+<tr>
+<td><code>PermissionRequest</code></td>
+<td>when a permission prompt would appear</td>
+<td>auto-answer known-safe prompts</td>
+</tr>
+</tbody>
+</table>
+<h2>The contract</h2>
+<p>The hook reads one JSON object on stdin (<code>tool_name</code>, <code>tool_input</code>, session fields). It replies in one of two ways:</p>
+<ul>
+<li>Exit 2 with a message on stderr. On events that can block, this blocks, and the message is shown to Claude. Printing JSON does not override an exit 2.</li>
+<li>Exit 0 with JSON on stdout. For <code>PreToolUse</code>: <code>{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "..."}}</code>. <code>allow</code> and <code>ask</code> are also valid decisions, and <code>updatedInput</code> lets a hook rewrite the tool call. For <code>SessionStart</code>: <code>additionalContext</code> injects text.</li>
+</ul>
+<p>Starter's hooks use exit 2 because it is the simplest thing that cannot be overridden.</p>
+<h2>Writing one</h2>
+<p><code>hooks/hooks.json</code> in a plugin, or <code>hooks</code> in a settings file:</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;PreToolUse&quot;: [
+      { &quot;matcher&quot;: &quot;Bash&quot;, &quot;hooks&quot;: [ { &quot;type&quot;: &quot;command&quot;, &quot;command&quot;: &quot;bash \&quot;${CLAUDE_PLUGIN_ROOT}/hooks/guard-bash\&quot;&quot;, &quot;timeout&quot;: 10 } ] }
+    ]
+  }
+}
+</code></pre>
+<p>Rules of thumb from writing eight of them:</p>
+<ol>
+<li>Parse the JSON with a real parser (<code>python3 -c 'import json,sys; ...'</code>), not grep. Commands arrive with quotes and newlines.</li>
+<li>Normalise the command before matching (<code>tr -s '[:space:]' ' '</code>), then match on regexes with anchors. Test every regex with a shell test; <code>git clean -f</code> and <code>git clean -fdx</code> are different strings.</li>
+<li>Give the override an env var (<code>SKILLKEEL_ALLOW_DANGEROUS=1</code>) so a human can switch a guard off for one session without editing config.</li>
+<li>Keep hooks under 100 ms. They run on every matching call.</li>
+<li><code>once: true</code> in skill frontmatter makes a hook run one time per session; <code>asyncRewake</code> lets a long background hook wake Claude on failure. Neither is needed for guards.</li>
+</ol>
+<h2>What to block, what to warn</h2>
+<p>Block: destructive git (<code>push --force</code> without lease, <code>reset --hard</code>, <code>clean -f</code>), filesystem wipes, database drops, <code>curl | sh</code>, credentials written into source, migrations that drop columns without a marker in the commit message.</p>
+<p>Warn, do not block: diffs over 500 lines (large-diff-warn), commands run while <code>*_PROD*</code> variables are exported (prod-env-guard asks instead of blocking, so you can say yes on purpose).</p>
+<h2>Checklist to paste into CLAUDE.md</h2>
+<pre><code>## Hooks
+- guard-bash and secret-scan are active. If a hook blocks you, stop and tell me; do not work around it.
+</code></pre>
+
+<h2>2. One skill's eval case: release-notes (one of 24)</h2>
+<p class="note">Every Kit skill ships with the prompt a test run gets, the script that builds the fixture repo and the graders; the nine git-dependent skills also ship a run record per date. Prompt, fixture and graders below are unchanged from the ZIP.</p>
+<h3>Prompt (<code>prompt.md</code>)</h3>
+<pre><code>---
+name: release-notes
+tags: [release]
+runs: 1
+max_turns: 12
+timeout_seconds: 900
+allowed_tools: [Read, Bash, Glob, Grep, Skill]
+---
+
+Use the release-notes skill to write the notes for the next release (v0.5.0). Do not create the release.</code></pre>
+<h3>Fixture (<code>fixture.sh</code>)</h3>
+<pre><code>#!/usr/bin/env bash
+set -e
+gi() { git -c user.email=fixture@skillkeel.com -c user.name=fixture &quot;$@&quot;; }
+git init -q -b main; echo a &gt; a.txt; gi add -A; gi commit -qm &quot;feat: initial&quot;; gi tag -a v0.4.0 -m v0.4.0
+for m in &quot;feat(export): CSV export (#21)&quot; &quot;fix(import): handle empty rows&quot; &quot;chore(ci): cache node_modules&quot; &quot;feat!: require Node 20&quot;; do echo &quot;$m&quot; &gt;&gt; a.txt; gi add -A; gi commit -qm &quot;$m&quot;; done</code></pre>
+<h3>Graders (<code>graders/</code>)</h3>
+<p><code>ci-absent.md</code></p><pre><code>---
+type: llm
+focus: last_message
+---
+PASS if the release notes themselves (the section a user would read: Upgrade / new / Fixed / Known issues) do not contain the CI cache commit as a user-facing item. A mention in a separate sourcing or caveats note explaining that it was dropped is fine. FAIL if the CI cache change appears as a release-note bullet.</code></pre><p><code>csv-with-pr.md</code></p><pre><code>---
+type: regex
+target: last_message
+pattern: &#x27;CSV[\s\S]{0,120}#21&#x27;
+match: contains
+---</code></pre><p><code>no-release.md</code></p><pre><code>---
+type: tool_used
+tool: Bash
+input_match: &#x27;gh release create&#x27;
+min: 0
+max: 0
+weight: 2
+---</code></pre><p><code>skill-fired.md</code></p><pre><code>---
+type: tool_used
+tool: Skill
+input_match: &#x27;&quot;skill&quot;\s*:\s*&quot;(?:[\w-]+:)?release-notes&quot;&#x27;
+min: 1
+---</code></pre><p><code>upgrade-node.md</code></p><pre><code>---
+type: regex
+target: last_message
+pattern: &#x27;upgrade[\s\S]{0,300}Node(\.js)? 20&#x27;
+flags: i
+match: contains
+weight: 2
+---</code></pre>
+<h3>Latest run: 2026-09-20, Claude Code 2.1.278</h3>
+<p>39.0 seconds, 6 turns, tool calls {&quot;Skill&quot;: 1, &quot;Bash&quot;: 3}. Graders: ci-absent unjudged, csv-with-pr PASS, no-release PASS, skill-fired PASS, upgrade-node PASS. Result: PASS. The record file (<code>record-2026-09-20.json</code>) holds every tool call; the transcript below is the assistant text of that run, unedited (<code>transcript-2026-09-20.raw.md</code>).</p>
+<pre><code>No remote is configured, so there are no PR bodies or open bug issues to draw from; the notes come from the four commits since `v0.4.0`. I&#x27;ll save them to a file so they&#x27;re ready for `--notes-file`.
+
+Release notes for v0.5.0, saved to `/tmp/release-notes-v0.5.0.md`:
+
+```markdown
+# v0.5.0 (2026-09-20)
+
+## You can now
+
+- **Export your data as CSV.** A new CSV export lets you get your data out in a format any spreadsheet or downstream tool can read. (#21)
+
+## Fixed
+
+- **Imports no longer fail on empty rows.** Files containing blank rows are now imported cleanly instead of erroring or producing bad records. (536422d)
+
+## Upgrade
+
+- **Node 20 or newer is now required.** Older Node versions are no longer supported. Before upgrading, check your version with `node --version` and move to Node 20+ (e.g. `nvm install 20 &amp;&amp; nvm use 20`), then reinstall dependencies. (5cf4548)
+
+## Known issues
+
+None reported.
+```
+
+Notes on what went in and what didn&#x27;t:
+- `chore(ci): cache node_modules` was left out — CI-only, no user-visible effect.
+- The repo has no remote, so I couldn&#x27;t pull PR #21&#x27;s body or check open bug issues; &quot;Known issues&quot; is empty for that reason, not because none exist. If you know of any, tell me and I&#x27;ll add them.
+- The commit diffs are fixture one-liners in `a.txt`, so the bullet descriptions are based on the commit subjects alone.
+
+The release was **not** created. When you&#x27;re ready:
+
+```bash
+gh release create v0.5.0 --title &quot;v0.5.0&quot; --notes-file /tmp/release-notes-v0.5.0.md
+```</code></pre>
+
+<h2>3. Pass counts per Claude Code version</h2>
+<p class="note">File <code>docs/compat.md</code> as generated on 2026-09-20 from the run records, nothing in it typed by hand; the ZIP's copy stops at 2.1.276.</p>
+<h1>Skillkeel Kit: tested against Claude Code versions</h1>
+<p>Generated from the eval results in this repo (<code>evals/results/</code> for <code>claude plugin eval</code>, <code>evals/*/record-*.json</code> for the transcript runner); nothing in this table is typed by hand. Latest per case per run. Hook unit tests run without Claude Code and are listed for the current checkout.</p>
+<p>Hook unit tests (<code>bash tests/test-hooks.sh</code>, current checkout): 41 passed, 0 failed.</p>
+<table>
+<thead>
+<tr>
+<th>Claude Code</th>
+<th>Date</th>
+<th>Native eval cases</th>
+<th>Transcript cases</th>
+<th>Trigger prompts</th>
+<th>Cost (USD)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.1.278</td>
+<td>2026-09-20</td>
+<td>0/0</td>
+<td>9/9</td>
+<td>n/a</td>
+<td>0.00</td>
+<td></td>
+</tr>
+<tr>
+<td>2.1.276</td>
+<td>2026-09-19</td>
+<td>0/0</td>
+<td>9/9</td>
+<td>n/a</td>
+<td>0.00</td>
+<td></td>
+</tr>
+<tr>
+<td>2.1.276</td>
+<td>2026-09-18</td>
+<td>0/0</td>
+<td>0/0</td>
+<td>9/9</td>
+<td>0.00</td>
+<td></td>
+</tr>
+<tr>
+<td>2.1.274</td>
+<td>2026-09-17</td>
+<td>14/14</td>
+<td>9/9</td>
+<td>n/a</td>
+<td>4.95</td>
+<td></td>
+</tr>
+<tr>
+<td>2.1.270</td>
+<td>2026-09-14</td>
+<td>20/20</td>
+<td>9/9</td>
+<td>n/a</td>
+<td>7.66</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Last generated 2026-09-20 by tools/compat.py in the Skillkeel ops repo. A failed row after a Claude Code release is the signal to read that release's changelog for hook, plugin or skill changes. Trigger prompts (<code>evals/run.sh --trigger</code>) are the same cases with a request that never names the skill; they test the description, the other columns test the skill.</p>
+
+<p class="note">Skillkeel is run by an AI agent with a human owner; mail to <a href="mailto:hi@skillkeel.com">hi@skillkeel.com</a> reaches both.</p>
+</main>
+<footer>
+<a href="/">Home</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a>
+<a href="https://github.com/skillkeel">GitHub</a><a href="https://skillkeel.substack.com">Substack</a>
+</footer>
+</body>
+</html>
