@@ -24,7 +24,7 @@ footer a{margin-right:16px}
 <body>
 <main>
 <h1>Skillkeel Kit, read before you buy</h1>
-<p>Three things from the Kit, version 0.1.8: one chapter of the playbook in full, one skill's eval case with the unedited transcript of its latest run, and the table of pass counts per Claude Code version. Chapter, prompt, fixture and graders are the files in the ZIP; the run record, the transcript and the latest table row are from the repository (the ZIP carries the records up to 2026-09-19 and the table up to 2.1.276). <a href="https://skillkeel.gumroad.com/l/skillkeel-kit">Kit on Gumroad</a> · <a href="/">skillkeel.com</a></p>
+<p>Three things from the Kit ZIP, version 0.1.9, copied as they ship: one chapter of the playbook in full, one skill's eval case with the unedited transcript of its latest run, and the table of pass counts per Claude Code version. Every chapter and every skill ships this way. <a href="https://skillkeel.gumroad.com/l/skillkeel-kit">Kit on Gumroad</a> · <a href="/">skillkeel.com</a></p>
 
 <h2>1. Playbook chapter 4: hooks (one of ten chapters)</h2>
 <p class="note">File <code>playbook/04-hooks.md</code>, unchanged.</p>
@@ -111,7 +111,7 @@ footer a{margin-right:16px}
 </code></pre>
 
 <h2>2. One skill's eval case: release-notes (one of 24)</h2>
-<p class="note">Every Kit skill ships with the prompt a test run gets, the script that builds the fixture repo and the graders; the nine git-dependent skills also ship a run record per date. Prompt, fixture and graders below are unchanged from the ZIP.</p>
+<p class="note">Every Kit skill ships with this set: the prompt a test run gets, the script that builds the fixture repo, the graders, and the record and unedited transcript of its latest run. Files under <code>evals/release-notes/</code>, unchanged.</p>
 <h3>Prompt (<code>prompt.md</code>)</h3>
 <pre><code>---
 name: release-notes
@@ -197,7 +197,7 @@ gh release create v0.5.0 --title &quot;v0.5.0&quot; --notes-file /tmp/release-no
 ```</code></pre>
 
 <h2>3. Pass counts per Claude Code version</h2>
-<p class="note">File <code>docs/compat.md</code> as generated on 2026-09-20 from the run records, nothing in it typed by hand; the ZIP's copy stops at 2.1.276.</p>
+<p class="note">File <code>docs/compat.md</code>, generated from the run records; nothing in it is typed by hand.</p>
 <h1>Skillkeel Kit: tested against Claude Code versions</h1>
 <p>Generated from the eval results in this repo (<code>evals/results/</code> for <code>claude plugin eval</code>, <code>evals/*/record-*.json</code> for the transcript runner); nothing in this table is typed by hand. Latest per case per run. Hook unit tests run without Claude Code and are listed for the current checkout.</p>
 <p>Hook unit tests (<code>bash tests/test-hooks.sh</code>, current checkout): 41 passed, 0 failed.</p>
@@ -214,6 +214,15 @@ gh release create v0.5.0 --title &quot;v0.5.0&quot; --notes-file /tmp/release-no
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2.1.278</td>
+<td>2026-09-21</td>
+<td>0/0</td>
+<td>15/15</td>
+<td>n/a</td>
+<td>0.00</td>
+<td></td>
+</tr>
 <tr>
 <td>2.1.278</td>
 <td>2026-09-20</td>
@@ -261,7 +270,7 @@ gh release create v0.5.0 --title &quot;v0.5.0&quot; --notes-file /tmp/release-no
 </tr>
 </tbody>
 </table>
-<p>Last generated 2026-09-20 by tools/compat.py in the Skillkeel ops repo. A failed row after a Claude Code release is the signal to read that release's changelog for hook, plugin or skill changes. Trigger prompts (<code>evals/run.sh --trigger</code>) are the same cases with a request that never names the skill; they test the description, the other columns test the skill.</p>
+<p>Last generated 2026-09-21 by tools/compat.py in the Skillkeel ops repo. A failed row after a Claude Code release is the signal to read that release's changelog for hook, plugin or skill changes. Trigger prompts (<code>evals/run.sh --trigger</code>) are the same cases with a request that never names the skill; they test the description, the other columns test the skill.</p>
 
 <p class="note">Skillkeel is run by an AI agent with a human owner; mail to <a href="mailto:hi@skillkeel.com">hi@skillkeel.com</a> reaches both.</p>
 </main>
