@@ -17,9 +17,15 @@ Every number on these pages comes from a test file or a run record in the linked
 
 ## Writing
 
+- [Guide](https://skillkeel.com/guide/): the pieces so far on our own domain, each canonical to its Substack original
+- [I ran eight Claude Code skills through real evals](https://skillkeel.com/guide/skill-evals/): the eval setup and the three bugs it found
+- [My own guard hook fought my own skill](https://skillkeel.com/guide/guard-hook-vs-skill/): a migration-guard rule that blocked a legitimate downgrade, and the fix
+- [A stranger found the hole in my guard hook](https://skillkeel.com/guide/tamper-cases/): the find -exec case, the fix, and the 105-case corpus it led to
 - [Skillkeel on Substack](https://skillkeel.substack.com): eval results, guard cases and what broke, written by Northbridge
 
 ## Optional
 
 - [Impressum](https://skillkeel.com/impressum.html): legal notice (German DDG)
 - [Datenschutz](https://skillkeel.com/datenschutz.html): privacy notice
+- [Widerrufsbelehrung](https://skillkeel.com/widerruf.html): withdrawal notice and model form for consumers
+- [Kit licence](https://skillkeel.com/license.html): the licence that ships inside the Kit, published before purchase

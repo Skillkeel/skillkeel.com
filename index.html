@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Skillkeel</title>
 <meta name="description" content="Guard hooks, tested skills and evals for Claude Code. Free Starter plugin on GitHub, paid Kit on Gumroad.">
+<link rel="canonical" href="https://skillkeel.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Skillkeel">
+<meta property="og:title" content="Skillkeel: guard hooks, tested skills and evals for Claude Code">
+<meta property="og:description" content="Guard hooks that refuse the destructive command, and skills that each ship with a fixture, graders and the unedited transcript of a real run. Free Starter, paid Kit.">
+<meta property="og:url" content="https://skillkeel.com/">
+<meta property="og:image" content="https://skillkeel.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Skillkeel: three commands refused by guard-bash, secret-scan and migration-guard.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@northbridgedev">
 <link rel="alternate" type="application/rss+xml" title="Skillkeel on Substack" href="https://skillkeel.substack.com/feed">
 <style>
 :root{color-scheme:light dark}
@@ -17,6 +29,11 @@ pre{background:#eef0f3;padding:12px 14px;border-radius:6px;overflow-x:auto}
 @media (prefers-color-scheme:dark){pre{background:#161b22}}
 ul{padding-left:20px}li{margin:4px 0}
 .note{font-size:.92rem;opacity:.8}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:8px 32px}
+@media (max-width:640px){.cols{grid-template-columns:1fr}}
+.cols h3{font-size:1rem;margin:14px 0 6px}
+.cols ul{margin:0;font-size:.95rem}
+ol.steps li{margin:0 0 10px}
 footer{max-width:720px;margin:0 auto;padding:24px 0 40px;font-size:.9rem;opacity:.75}
 footer a{margin-right:16px}
 </style>
@@ -32,25 +49,60 @@ footer a{margin-right:16px}
 <p class="note">Every call in the recording is the real hook fed the JSON Claude Code sends.</p>
 
 <h2>Starter, free and MIT</h2>
-<p>Three hooks and eight repo skills. guard-bash refuses destructive shell commands (rm -rf on root paths, force-push without lease, git reset --hard, recursive rm hidden behind find -exec, git settings that run commands). secret-scan refuses file writes that contain credentials. session-start prints a short project brief. 79 hook tests, 8 skill evals with transcripts, per-version results in the repo.</p>
+<p>guard-bash refuses destructive shell commands (rm -rf on root paths, force-push without lease, git reset --hard, recursive rm hidden behind find -exec, git settings that run commands). secret-scan refuses file writes that contain credentials. session-start prints a short project brief. The tests, the eval cases and the per-version results are all in the repository.</p>
 <pre><code>/plugin marketplace add skillkeel/skillkeel-starter
 /plugin install skillkeel-starter@skillkeel</code></pre>
 <p><a href="https://github.com/skillkeel/skillkeel-starter">Source, tests and transcripts on GitHub</a> · <a href="https://skillkeel.gumroad.com/l/skillkeel-starter">ZIP on Gumroad</a></p>
 <p>Listed on <a href="https://www.claudepluginhub.com/plugins/skillkeel-skillkeel-starter">ClaudePluginHub</a> and <a href="https://www.claudemarketplace.net/skills/skillkeel-starter">ClaudeMarketplace</a>, two directories of Claude Code plugins and skills.</p>
 
 <h2>Kit</h2>
-<p>A setup playbook, 24 skills in six packs, five guard hooks, five subagents, guardrail checklists and CLAUDE.md templates for eight stacks. Same rule: every skill was run against a fixture before it shipped. Two tiers, the second with access to the private repo. The price is on the Gumroad page; it is before tax, and Gumroad adds the tax of your country and shows the total at checkout.</p>
+<p>The playbook, the six skill packs, the rest of the hooks, the subagents, the checklists and the CLAUDE.md templates, itemised below. Same rule: every skill was run against a fixture before it shipped. Two tiers, the second with access to the private repo. The price is on the Gumroad page; it is before tax, and Gumroad adds the tax of your country and shows the total at checkout.</p>
 <p><a href="/kit/preview/">Read before you buy</a>: chapter 4 of the playbook, one skill's eval case with its unedited transcript, and the pass counts per Claude Code version, copied from the ZIP. · <a href="https://skillkeel.gumroad.com/l/skillkeel-kit">Skillkeel Kit on Gumroad</a></p>
 <p>Current: Starter 0.1.10 (2026-09-21) and Kit 0.1.10 (2026-09-21). Transcript evals on Claude Code 2.1.278: Starter 8 of 8 (2026-09-21), Kit 9 of 9 (2026-09-20) and 15 of 15 (2026-09-21), the two disjoint halves of its 24 skills. Every version tried is in docs/compat.md of each download.</p>
 
+<!-- generated: contents (tools/site_contents.py) -->
+<h2>What is in each one</h2>
+<div class="cols">
+<div>
+<h3>Starter 0.1.10, free and MIT</h3>
+<ul>
+<li>3 guard hooks: <code>guard-bash</code>, <code>secret-scan</code>, <code>session-start</code></li>
+<li>8 repo skills: changelog, claude-md-init, commit-message, dependency-audit, pr-description, readme-refresh, secret-audit, test-gap-finder</li>
+<li>79 hook tests and 8 eval cases, each with its fixture, its graders and a transcript</li>
+</ul>
+</div>
+<div>
+<h3>Kit 0.1.10</h3>
+<ul>
+<li>5 guard hooks: <code>prod-env-guard</code>, <code>migration-guard</code>, <code>test-before-commit</code>, <code>large-diff-warn</code>, <code>cost-guard</code></li>
+<li>24 skills in 6 packs, with 24 eval cases</li>
+<li>A playbook of 10 chapters</li>
+<li>5 subagents, 3 guardrail checklists, 8 CLAUDE.md templates</li>
+<li>41 hook tests</li>
+</ul>
+</div>
+</div>
+<p class="note">Counts on this page are read from the shipped repositories by <code>tools/site_contents.py</code> and checked against them again by <code>make surfaces</code>.</p>
+<!-- /generated: contents -->
+
+<!-- generated: how-it-works (tools/site_contents.py) -->
+<h2>How it works</h2>
+<ol class="steps">
+<li>Install the plugin with the two slash commands above, or unzip the Gumroad download into the project. Everything runs on your machine; no hook in either product makes a network call.</li>
+<li>Claude Code hands every Bash, Write and Edit call to the hooks as JSON before it runs them. A hook that refuses exits 2 and prints why, and Claude reads that text.</li>
+<li>The refusals are specific: a recursive delete hidden behind <code>find -exec</code>, a force push without a lease, a credential on its way into a file. Each one names its rule and the environment variable that turns it off for the session.</li>
+<li>The skills do the repeatable work: changelogs, PR descriptions, reviews, migrations. Each was run against a fixture repository before it shipped, and the unedited transcript of that run is in the download.</li>
+</ol>
+<!-- /generated: how-it-works -->
+
 <h2>Writing</h2>
-<p>Eval results, guard cases and what broke: <a href="https://skillkeel.substack.com">skillkeel.substack.com</a> (<a href="https://skillkeel.substack.com/subscribe">subscribe</a>, <a href="https://skillkeel.substack.com/feed">RSS</a>); new versions are announced to <a href="https://skillkeel.gumroad.com/subscribe">Gumroad followers</a>. Northbridge is the developer behind Skillkeel; the business is run by an AI agent with a human owner; mail to <a href="mailto:hi@skillkeel.com">hi@skillkeel.com</a> reaches both.</p>
+<p>Eval results, guard cases and what broke: the three pieces so far are in the <a href="/guide/">guide</a>, first published on <a href="https://skillkeel.substack.com">skillkeel.substack.com</a> (<a href="https://skillkeel.substack.com/subscribe">subscribe</a>, <a href="https://skillkeel.substack.com/feed">RSS</a>); new versions are announced to <a href="https://skillkeel.gumroad.com/subscribe">Gumroad followers</a>. Northbridge is the developer behind Skillkeel; the business is run by an AI agent with a human owner; mail to <a href="mailto:hi@skillkeel.com">hi@skillkeel.com</a> reaches both.</p>
 
 <h2>Contact</h2>
 <p><a href="mailto:hi@skillkeel.com">hi@skillkeel.com</a></p>
 </main>
 <footer>
-<a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a>
+<a href="/guide/">Guide</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a><a href="/widerruf.html">Widerruf</a><a href="/license.html">Kit licence</a>
 <a href="https://github.com/skillkeel">GitHub</a><a href="https://skillkeel.substack.com">Substack</a>
 </footer>
 </body>

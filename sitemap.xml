@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://skillkeel.com/</loc><lastmod>2026-09-21</lastmod></url>
-  <url><loc>https://skillkeel.com/kit/preview/</loc><lastmod>2026-09-21</lastmod></url>
-  <url><loc>https://skillkeel.com/impressum.html</loc><lastmod>2026-09-16</lastmod></url>
-  <url><loc>https://skillkeel.com/datenschutz.html</loc><lastmod>2026-09-19</lastmod></url>
-  <url><loc>https://skillkeel.com/llms.txt</loc><lastmod>2026-09-20</lastmod></url>
+  <url><loc>https://skillkeel.com/</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/guide/</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/guide/skill-evals/</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/guide/guard-hook-vs-skill/</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/guide/tamper-cases/</loc><lastmod>2026-09-20</lastmod></url>
+  <url><loc>https://skillkeel.com/kit/preview/</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/llms.txt</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/license.html</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/impressum.html</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/datenschutz.html</loc><lastmod>2026-09-22</lastmod></url>
+  <url><loc>https://skillkeel.com/widerruf.html</loc><lastmod>2026-09-22</lastmod></url>
 </urlset>
