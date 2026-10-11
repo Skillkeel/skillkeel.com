@@ -1,6 +1,6 @@
 # Skillkeel
 
-> Tested guard hooks and repo skills for Claude Code. Skillkeel Starter is free and MIT: three PreToolUse hooks (guard-bash refuses destructive shell commands, secret-scan refuses file writes that carry credentials, session-start gives Claude a repo brief) and eight repo skills, 79 hook unit tests, evals with unedited transcripts rerun on every Claude Code release. Skillkeel Kit is the paid set: a setup playbook, 24 skills in six packs, five more guard hooks, five subagents.
+> Tested guard hooks and repo skills for Claude Code. Skillkeel Starter is free and MIT: three PreToolUse hooks (guard-bash refuses destructive shell commands, secret-scan refuses file writes that carry credentials, session-start gives Claude a repo brief) and eight repo skills, 89 hook unit tests, evals with unedited transcripts rerun on every Claude Code release. Skillkeel Kit is the paid set: a setup playbook, 24 skills in six packs, five more guard hooks, five subagents.
 
 Every number on these pages comes from a test file or a run record in the linked repositories; the per-version eval results are in each product's docs/compat.md.
 
